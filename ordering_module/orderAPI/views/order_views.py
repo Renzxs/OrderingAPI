@@ -90,7 +90,7 @@ class UpdateOrder(generics.RetrieveUpdateAPIView):
             # Send SMS Notification
             formatted_phone_number = "+63" + instance.phone_number[1:] 
             print("Sending SMS to " + formatted_phone_number)
-            # sendSMS(formatted_phone_number)
+            sendSMS(formatted_phone_number)
             print("Order status changed to 'On the way'.")
             
         success = True 
@@ -117,18 +117,18 @@ class DeleteOrder(generics.RetrieveDestroyAPIView):
             return Response({"message": message, "success": success}, status=status.HTTP_400_BAD_REQUEST)
     
     
-# def sendSMS(phone_number):
-#     account_sid = os.environ.get('ACCOUNT_SID')
-#     auth_token = os.environ.get('AUTH_TOKEN')
-#     client = Client(account_sid, auth_token)
+def sendSMS(phone_number):
+    account_sid = os.environ.get('ACCOUNT_SID')
+    auth_token = os.environ.get('AUTH_TOKEN')
+    client = Client(account_sid, auth_token)
 
-#     try:
-#         message = client.messages.create(
-#             body="Your order in CoffeeShop is already on the way, please prepare exact payment and expect delivery soon.", 
-#             from_=os.environ.get('TWILIO_NUMBER'),
-#             to=phone_number
-#         )
-#         print("Successfully sent SMS!")
-#         print(message.sid)
-#     except Exception as e:
-#         print(f"Failed to send SMS: {e}")
+    try:
+        message = client.messages.create(
+            body="Your order in CoffeeShop is already on the way, please prepare exact payment and expect delivery soon.", 
+            from_=os.environ.get('TWILIO_NUMBER'),
+            to=phone_number
+        )
+        print("Successfully sent SMS!")
+        print(message.sid)
+    except Exception as e:
+        print(f"Failed to send SMS: {e}")
